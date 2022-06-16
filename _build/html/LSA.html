@@ -1,0 +1,2501 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Topic Modelling using Latent Semantic Analysis (LSA) and Latent Dirichlet Allocation (LDA) in sklearn &#8212; My sample book</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to your Jupyter Book" href="intro.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">My sample book</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Welcome to your Jupyter Book
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Topic Modelling using Latent Semantic Analysis (LSA) and Latent Dirichlet Allocation (LDA) in sklearn
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/docs/LSA.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/executablebooks/jupyter-book"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2FLSA.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="_sources/LSA.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Topic Modelling using Latent Semantic Analysis (LSA) and Latent Dirichlet Allocation (LDA) in sklearn
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#there-also-exists-implementation-using-the-gensim-library-checkout-the-same-here-here-and-here-and-also-in-this-notebook">
+     <strong>
+      There also exists implementation using the Gensim library. Checkout the same here  ,   here and here and also in this notebook.
+     </strong>
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#please-star-upvote-in-case-u-like-it">
+   [Please star/upvote in case u like it. ]
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#importing-modules">
+     IMPORTING MODULES
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#loading-the-dataset">
+     LOADING THE DATASET
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#data-cleaning-pre-processing">
+     DATA CLEANING &amp; PRE-PROCESSING
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#extracting-the-features-and-creating-the-document-term-matrix-dtm">
+     EXTRACTING THE FEATURES AND CREATING THE DOCUMENT-TERM-MATRIX ( DTM )
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#we-can-now-see-the-most-frequent-and-rare-words-in-the-news-headlines-based-on-idf-score-the-lesser-the-value-more-common-is-the-word-in-the-news-headlines">
+     We can now see the most frequent and rare words in the news headlines based on idf score. The lesser the value; more common is the word in the news headlines.
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#topic-modelling">
+     TOPIC MODELLING
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#latent-semantic-analysis-lsa">
+   Latent Semantic Analysis (LSA)
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#now-e-can-get-a-list-of-the-important-words-for-each-of-the-10-topics-as-shown-for-simplicity-here-i-have-shown-10-words-for-each-topic">
+     Now e can get a list of the important words for each of the 10 topics as shown. For simplicity here I have shown 10 words for each topic.
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#latent-dirichlet-allocation-lda">
+   Latent Dirichlet Allocation (LDA)
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#note-that-the-values-in-a-particular-row-adds-to-1-this-is-beacuse-each-value-denotes-the-of-contribution-of-the-corressponding-topic-in-the-document">
+     Note that the values in a particular row adds to 1. This is beacuse each value denotes the % of contribution of the corressponding topic in the document.
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#as-we-can-see-topic-7-8-are-dominantly-present-in-document-0">
+     As we can see Topic 7 &amp; 8 are dominantly present in document 0.
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#most-important-words-for-a-topic-say-10-this-time">
+     Most important words for a topic. (say 10 this time.)
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#to-better-visualize-words-in-a-topic-we-can-see-the-word-cloud-for-each-topic-top-50-words-are-plotted">
+     To better visualize words in a topic we can see the word cloud. For each topic top 50 words are plotted.
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-end">
+   THE END !!!
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#please-star-upvote-in-case-u-liked-it">
+   [Please star/upvote in case u liked it. ]
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Topic Modelling using Latent Semantic Analysis (LSA) and Latent Dirichlet Allocation (LDA) in sklearn</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Topic Modelling using Latent Semantic Analysis (LSA) and Latent Dirichlet Allocation (LDA) in sklearn
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#there-also-exists-implementation-using-the-gensim-library-checkout-the-same-here-here-and-here-and-also-in-this-notebook">
+     <strong>
+      There also exists implementation using the Gensim library. Checkout the same here  ,   here and here and also in this notebook.
+     </strong>
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#please-star-upvote-in-case-u-like-it">
+   [Please star/upvote in case u like it. ]
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#importing-modules">
+     IMPORTING MODULES
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#loading-the-dataset">
+     LOADING THE DATASET
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#data-cleaning-pre-processing">
+     DATA CLEANING &amp; PRE-PROCESSING
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#extracting-the-features-and-creating-the-document-term-matrix-dtm">
+     EXTRACTING THE FEATURES AND CREATING THE DOCUMENT-TERM-MATRIX ( DTM )
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#we-can-now-see-the-most-frequent-and-rare-words-in-the-news-headlines-based-on-idf-score-the-lesser-the-value-more-common-is-the-word-in-the-news-headlines">
+     We can now see the most frequent and rare words in the news headlines based on idf score. The lesser the value; more common is the word in the news headlines.
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#topic-modelling">
+     TOPIC MODELLING
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#latent-semantic-analysis-lsa">
+   Latent Semantic Analysis (LSA)
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#now-e-can-get-a-list-of-the-important-words-for-each-of-the-10-topics-as-shown-for-simplicity-here-i-have-shown-10-words-for-each-topic">
+     Now e can get a list of the important words for each of the 10 topics as shown. For simplicity here I have shown 10 words for each topic.
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#latent-dirichlet-allocation-lda">
+   Latent Dirichlet Allocation (LDA)
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#note-that-the-values-in-a-particular-row-adds-to-1-this-is-beacuse-each-value-denotes-the-of-contribution-of-the-corressponding-topic-in-the-document">
+     Note that the values in a particular row adds to 1. This is beacuse each value denotes the % of contribution of the corressponding topic in the document.
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#as-we-can-see-topic-7-8-are-dominantly-present-in-document-0">
+     As we can see Topic 7 &amp; 8 are dominantly present in document 0.
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#most-important-words-for-a-topic-say-10-this-time">
+     Most important words for a topic. (say 10 this time.)
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#to-better-visualize-words-in-a-topic-we-can-see-the-word-cloud-for-each-topic-top-50-words-are-plotted">
+     To better visualize words in a topic we can see the word cloud. For each topic top 50 words are plotted.
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-end">
+   THE END !!!
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#please-star-upvote-in-case-u-liked-it">
+   [Please star/upvote in case u liked it. ]
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section id="topic-modelling-using-latent-semantic-analysis-lsa-and-latent-dirichlet-allocation-lda-in-sklearn">
+<h1>Topic Modelling using Latent Semantic Analysis (LSA) and Latent Dirichlet Allocation (LDA) in sklearn<a class="headerlink" href="#topic-modelling-using-latent-semantic-analysis-lsa-and-latent-dirichlet-allocation-lda-in-sklearn" title="Permalink to this headline">#</a></h1>
+<section id="there-also-exists-implementation-using-the-gensim-library-checkout-the-same-here-here-and-here-and-also-in-this-notebook">
+<h2><strong>There also exists implementation using the Gensim library. Checkout the same <a class="reference external" href="https://www.analyticsvidhya.com/blog/2016/08/beginners-guide-to-topic-modeling-in-python/">here</a>  ,   <a class="reference external" href="https://nlpforhackers.io/topic-modeling/">here</a> and <a class="reference external" href="https://www.machinelearningplus.com/nlp/topic-modeling-gensim-python/">here</a> and also in <a class="reference external" href="https://github.com/susanli2016/NLP-with-Python/blob/master/LDA_news_headlines.ipynb">this</a> notebook.</strong><a class="headerlink" href="#there-also-exists-implementation-using-the-gensim-library-checkout-the-same-here-here-and-here-and-also-in-this-notebook" title="Permalink to this headline">#</a></h2>
+</section>
+</section>
+<section id="please-star-upvote-in-case-u-like-it">
+<h1>[Please star/upvote in case u like it. ]<a class="headerlink" href="#please-star-upvote-in-case-u-like-it" title="Permalink to this headline">#</a></h1>
+<section id="importing-modules">
+<h2>IMPORTING MODULES<a class="headerlink" href="#importing-modules" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span> pip install seaborn
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: seaborn in c:\users\windows 10\appdata\local\programs\python\python39\lib\site-packages (0.11.2)
+Requirement already satisfied: pandas&gt;=0.23 in c:\users\windows 10\appdata\local\programs\python\python39\lib\site-packages (from seaborn) (1.4.2)
+Requirement already satisfied: numpy&gt;=1.15 in c:\users\windows 10\appdata\local\programs\python\python39\lib\site-packages (from seaborn) (1.20.1)
+Requirement already satisfied: scipy&gt;=1.0 in c:\users\windows 10\appdata\local\programs\python\python39\lib\site-packages (from seaborn) (1.8.0)
+Requirement already satisfied: matplotlib&gt;=2.2 in c:\users\windows 10\appdata\local\programs\python\python39\lib\site-packages (from seaborn) (3.3.4)
+Requirement already satisfied: kiwisolver&gt;=1.0.1 in c:\users\windows 10\appdata\local\programs\python\python39\lib\site-packages (from matplotlib&gt;=2.2-&gt;seaborn) (1.3.1)
+Requirement already satisfied: pillow&gt;=6.2.0 in c:\users\windows 10\appdata\local\programs\python\python39\lib\site-packages (from matplotlib&gt;=2.2-&gt;seaborn) (8.1.2)
+Requirement already satisfied: python-dateutil&gt;=2.1 in c:\users\windows 10\appdata\local\programs\python\python39\lib\site-packages (from matplotlib&gt;=2.2-&gt;seaborn) (2.8.2)
+Requirement already satisfied: cycler&gt;=0.10 in c:\users\windows 10\appdata\local\programs\python\python39\lib\site-packages (from matplotlib&gt;=2.2-&gt;seaborn) (0.10.0)
+Requirement already satisfied: pyparsing!=2.0.4,!=2.1.2,!=2.1.6,&gt;=2.0.3 in c:\users\windows 10\appdata\local\programs\python\python39\lib\site-packages (from matplotlib&gt;=2.2-&gt;seaborn) (2.4.7)
+Requirement already satisfied: pytz&gt;=2020.1 in c:\users\windows 10\appdata\local\programs\python\python39\lib\site-packages (from pandas&gt;=0.23-&gt;seaborn) (2021.1)
+Requirement already satisfied: six in c:\users\windows 10\appdata\local\programs\python\python39\lib\site-packages (from cycler&gt;=0.10-&gt;matplotlib&gt;=2.2-&gt;seaborn) (1.16.0)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># data visualisation and manipulation</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">style</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">nltk</span>
+<span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;stopwords&#39;</span><span class="p">)</span>
+<span class="c1">#configure</span>
+<span class="c1"># sets matplotlib to inline and displays graphs below the corressponding cell.</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline  
+<span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;fivethirtyeight&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s1">&#39;whitegrid&#39;</span><span class="p">,</span><span class="n">color_codes</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1">#import nltk</span>
+<span class="kn">import</span> <span class="nn">nltk</span>
+<span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="kn">import</span> <span class="n">stopwords</span>
+<span class="kn">from</span> <span class="nn">nltk.tokenize</span> <span class="kn">import</span> <span class="n">word_tokenize</span><span class="p">,</span><span class="n">sent_tokenize</span>
+
+<span class="c1">#preprocessing</span>
+<span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="kn">import</span> <span class="n">stopwords</span>  <span class="c1">#stopwords</span>
+<span class="kn">from</span> <span class="nn">nltk</span> <span class="kn">import</span> <span class="n">word_tokenize</span><span class="p">,</span><span class="n">sent_tokenize</span> <span class="c1"># tokenizing</span>
+<span class="kn">from</span> <span class="nn">nltk.stem</span> <span class="kn">import</span> <span class="n">PorterStemmer</span><span class="p">,</span><span class="n">LancasterStemmer</span>  <span class="c1"># using the Porter Stemmer and Lancaster Stemmer and others</span>
+<span class="kn">from</span> <span class="nn">nltk.stem.snowball</span> <span class="kn">import</span> <span class="n">SnowballStemmer</span>
+<span class="kn">from</span> <span class="nn">nltk.stem</span> <span class="kn">import</span> <span class="n">WordNetLemmatizer</span>  <span class="c1"># lammatizer from WordNet</span>
+
+<span class="c1"># for named entity recognition (NER)</span>
+<span class="kn">from</span> <span class="nn">nltk</span> <span class="kn">import</span> <span class="n">ne_chunk</span>
+
+<span class="c1"># vectorizers for creating the document-term-matrix (DTM)</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">TfidfVectorizer</span><span class="p">,</span><span class="n">CountVectorizer</span>
+
+<span class="c1">#stop-words</span>
+<span class="n">stop_words</span><span class="o">=</span><span class="nb">set</span><span class="p">(</span><span class="n">nltk</span><span class="o">.</span><span class="n">corpus</span><span class="o">.</span><span class="n">stopwords</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="s1">&#39;indonesian&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[nltk_data] Downloading package stopwords to C:\Users\Windows
+[nltk_data]     10\AppData\Roaming\nltk_data...
+[nltk_data]   Package stopwords is already up-to-date!
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="loading-the-dataset">
+<h2>LOADING THE DATASET<a class="headerlink" href="#loading-the-dataset" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;dataset.csv&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">3</span><span class="o">-</span><span class="mi">22</span><span class="n">b0e5a9d852</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">df</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;dataset.csv&quot;</span><span class="p">)</span>
+
+<span class="nn">c:\users\windows 10\appdata\local\programs\python\python39\lib\site-packages\pandas\util\_decorators.py</span> in <span class="ni">wrapper</span><span class="nt">(*args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">309</span>                     <span class="n">stacklevel</span><span class="o">=</span><span class="n">stacklevel</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">310</span>                 <span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">311</span>             <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">312</span> 
+<span class="g g-Whitespace">    </span><span class="mi">313</span>         <span class="k">return</span> <span class="n">wrapper</span>
+
+<span class="nn">c:\users\windows 10\appdata\local\programs\python\python39\lib\site-packages\pandas\io\parsers\readers.py</span> in <span class="ni">read_csv</span><span class="nt">(filepath_or_buffer, sep, delimiter, header, names, index_col, usecols, squeeze, prefix, mangle_dupe_cols, dtype, engine, converters, true_values, false_values, skipinitialspace, skiprows, skipfooter, nrows, na_values, keep_default_na, na_filter, verbose, skip_blank_lines, parse_dates, infer_datetime_format, keep_date_col, date_parser, dayfirst, cache_dates, iterator, chunksize, compression, thousands, decimal, lineterminator, quotechar, quoting, doublequote, escapechar, comment, encoding, encoding_errors, dialect, error_bad_lines, warn_bad_lines, on_bad_lines, delim_whitespace, low_memory, memory_map, float_precision, storage_options)</span>
+<span class="g g-Whitespace">    </span><span class="mi">678</span>     <span class="n">kwds</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwds_defaults</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">679</span> 
+<span class="ne">--&gt; </span><span class="mi">680</span>     <span class="k">return</span> <span class="n">_read</span><span class="p">(</span><span class="n">filepath_or_buffer</span><span class="p">,</span> <span class="n">kwds</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">681</span> 
+<span class="g g-Whitespace">    </span><span class="mi">682</span> 
+
+<span class="nn">c:\users\windows 10\appdata\local\programs\python\python39\lib\site-packages\pandas\io\parsers\readers.py</span> in <span class="ni">_read</span><span class="nt">(filepath_or_buffer, kwds)</span>
+<span class="g g-Whitespace">    </span><span class="mi">573</span> 
+<span class="g g-Whitespace">    </span><span class="mi">574</span>     <span class="c1"># Create the parser.</span>
+<span class="ne">--&gt; </span><span class="mi">575</span>     <span class="n">parser</span> <span class="o">=</span> <span class="n">TextFileReader</span><span class="p">(</span><span class="n">filepath_or_buffer</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">576</span> 
+<span class="g g-Whitespace">    </span><span class="mi">577</span>     <span class="k">if</span> <span class="n">chunksize</span> <span class="ow">or</span> <span class="n">iterator</span><span class="p">:</span>
+
+<span class="nn">c:\users\windows 10\appdata\local\programs\python\python39\lib\site-packages\pandas\io\parsers\readers.py</span> in <span class="ni">__init__</span><span class="nt">(self, f, engine, **kwds)</span>
+<span class="g g-Whitespace">    </span><span class="mi">931</span> 
+<span class="g g-Whitespace">    </span><span class="mi">932</span>         <span class="bp">self</span><span class="o">.</span><span class="n">handles</span><span class="p">:</span> <span class="n">IOHandles</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="ne">--&gt; </span><span class="mi">933</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_engine</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_engine</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">934</span> 
+<span class="g g-Whitespace">    </span><span class="mi">935</span>     <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<span class="nn">c:\users\windows 10\appdata\local\programs\python\python39\lib\site-packages\pandas\io\parsers\readers.py</span> in <span class="ni">_make_engine</span><span class="nt">(self, f, engine)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1215</span>             <span class="c1"># &quot;Union[str, PathLike[str], ReadCsvBuffer[bytes], ReadCsvBuffer[str]]&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">1216</span>             <span class="c1"># , &quot;str&quot;, &quot;bool&quot;, &quot;Any&quot;, &quot;Any&quot;, &quot;Any&quot;, &quot;Any&quot;, &quot;Any&quot;</span>
+<span class="ne">-&gt; </span><span class="mi">1217</span>             <span class="bp">self</span><span class="o">.</span><span class="n">handles</span> <span class="o">=</span> <span class="n">get_handle</span><span class="p">(</span>  <span class="c1"># type: ignore[call-overload]</span>
+<span class="g g-Whitespace">   </span><span class="mi">1218</span>                 <span class="n">f</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1219</span>                 <span class="n">mode</span><span class="p">,</span>
+
+<span class="nn">c:\users\windows 10\appdata\local\programs\python\python39\lib\site-packages\pandas\io\common.py</span> in <span class="ni">get_handle</span><span class="nt">(path_or_buf, mode, encoding, compression, memory_map, is_text, errors, storage_options)</span>
+<span class="g g-Whitespace">    </span><span class="mi">787</span>         <span class="k">if</span> <span class="n">ioargs</span><span class="o">.</span><span class="n">encoding</span> <span class="ow">and</span> <span class="s2">&quot;b&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ioargs</span><span class="o">.</span><span class="n">mode</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">788</span>             <span class="c1"># Encoding</span>
+<span class="ne">--&gt; </span><span class="mi">789</span>             <span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">790</span>                 <span class="n">handle</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">791</span>                 <span class="n">ioargs</span><span class="o">.</span><span class="n">mode</span><span class="p">,</span>
+
+<span class="ne">FileNotFoundError</span>: [Errno 2] No such file or directory: &#39;dataset.csv&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">93</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+  <div id="df-dde6f08b-eea7-4727-bcb4-fc2f5db49366">
+    <div class="colab-df-container">
+      <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Judul</th>
+      <th>Penulis</th>
+      <th>Pembimbing 1</th>
+      <th>Pembimbing 2</th>
+      <th>abstrak</th>
+      <th>Kata Kunci</th>
+      <th>Label</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>SISTEM PENENTUAN STATUS GIZI PASIEN RAWAT INAP...</td>
+      <td>Nur Anggraeni</td>
+      <td>Diana Rahmawati, ST.M.T</td>
+      <td>Firli Irhamni, ST.M.Kom</td>
+      <td>Di Indonesia masalah perkembangan gizi adalah ...</td>
+      <td>Naïve Bayes Classifier, Sistem Pendukung Keput...</td>
+      <td>RPL</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>SISTEM AUGMENTED REALITY ANIMASI BENDA BERGERA...</td>
+      <td>Septian Rahman Hakim</td>
+      <td>Arik Kurniawati, S.Kom., M.T.</td>
+      <td>Haryanto, S.T., M.T.</td>
+      <td>Seiring perkembangan teknologi yang ada diduni...</td>
+      <td>-</td>
+      <td>CAI</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>APLIKASI KONTROL DAN MONITORING JARINGAN KOMPU...</td>
+      <td>M. Basith Ardianto</td>
+      <td>Drs. Budi Soesilo, MT</td>
+      <td>Koko Joni, ST</td>
+      <td>Berjalannya koneksi jaringan komputer dengan l...</td>
+      <td>Algoritma Genetika, Optimasi,  Penjadwalan</td>
+      <td>RPL</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>RANCANG BANGUN APLIKASI PROXY SERVER UNTUK ENK...</td>
+      <td>Akhmad Suyandi, S.Kom</td>
+      <td>Drs. Budi Soesilo, M.T</td>
+      <td>Hermawan, ST, MT</td>
+      <td>Web server adalah sebuah perangkat lunak serve...</td>
+      <td>-</td>
+      <td>CAI</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>SISTEM INFORMASI PERUSAHAAN OTOBUS SUMBER KENC...</td>
+      <td>Elky Lilik Misdayani</td>
+      <td>Fitri Damayanti,S.Kom,M.Kom</td>
+      <td>-</td>
+      <td>Sistem informasi pengolahan data yang dibutuhk...</td>
+      <td>-</td>
+      <td>RPL</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>87</th>
+      <td>PENGENALAN TULISAN TANGAN HURUF ALFABET DENGAN...</td>
+      <td>Hilyati Safitri</td>
+      <td>Fitri Damayanti S.Kom., M.Kom</td>
+      <td>Kurniawan Eka Permana S.Kom., M.Sc.</td>
+      <td>Pengenalan tulisan tangan merupakan topik pene...</td>
+      <td>Tulisan Tangan, Modified Direction Feature, Le...</td>
+      <td>CAI</td>
+    </tr>
+    <tr>
+      <th>88</th>
+      <td>Perancangan Sistem Informasi Badan Kepegawaian...</td>
+      <td>MALIKUL HAMZAH</td>
+      <td>Moch. Kautsar Sophan, S.Kom., M.MT.</td>
+      <td>Yeni Kustiyaningsih, S.Kom., M.Kom.</td>
+      <td>Kantor Badan Kepegawaian kota Bangkalan adalah...</td>
+      <td>Arsitektur interprise, TOGAF ADM, Arsitektur b...</td>
+      <td>RPL</td>
+    </tr>
+    <tr>
+      <th>89</th>
+      <td>RANCANG BANGUN APLIKASI PEMILIHAN TEKNIK REKAY...</td>
+      <td>Lia Fransiska</td>
+      <td>Firli Irhamni S.T, M.Kom</td>
+      <td>Budi Dwi Satoto S.T, M.Kom</td>
+      <td>Penyusunan Sistem Pendukung Keputusan pemiliha...</td>
+      <td>Sistem Pendukung Keputusan, Teknik Rekayasa Ke...</td>
+      <td>RPL</td>
+    </tr>
+    <tr>
+      <th>90</th>
+      <td>DETEKSI COREPOINT SIDIK JARI MENGGUNAKAN METOD...</td>
+      <td>Erwina Safitri</td>
+      <td>Dr. Indah Agustien, S.Kom., M.Kom</td>
+      <td>Fitri Damayanti, S.Kom., M.Kom</td>
+      <td>Sidik jari adalah salah satu karakteristik fis...</td>
+      <td>Sidik jari, Corepoint, Geometry Of Region Tech...</td>
+      <td>CAI</td>
+    </tr>
+    <tr>
+      <th>91</th>
+      <td>SISTEM PENDUKUNG KEPUTUSAN REKOMENDASI MENU DI...</td>
+      <td>Desy Mariana S. Kom</td>
+      <td>Haryanto ST, MT</td>
+      <td>Firli Irhamni ST, M. Kom</td>
+      <td>Pelayanan makanan bagi pasien rawat inap di Ru...</td>
+      <td>Sistem Pendukung Keputusan, Harris Benedict da...</td>
+      <td>RPL</td>
+    </tr>
+  </tbody>
+</table>
+<p>92 rows × 7 columns</p>
+</div>
+      <button class="colab-df-convert" onclick="convertToInteractive('df-dde6f08b-eea7-4727-bcb4-fc2f5db49366')"
+              title="Convert this dataframe to an interactive table."
+              style="display:none;">
+
+  <svg xmlns="http://www.w3.org/2000/svg" height="24px"viewBox="0 0 24 24"
+       width="24px">
+    <path d="M0 0h24v24H0V0z" fill="none"/>
+    <path d="M18.56 5.44l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94zm-11 1L8.5 8.5l.94-2.06 2.06-.94-2.06-.94L8.5 2.5l-.94 2.06-2.06.94zm10 10l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94z"/><path d="M17.41 7.96l-1.37-1.37c-.4-.4-.92-.59-1.43-.59-.52 0-1.04.2-1.43.59L10.3 9.45l-7.72 7.72c-.78.78-.78 2.05 0 2.83L4 21.41c.39.39.9.59 1.41.59.51 0 1.02-.2 1.41-.59l7.78-7.78 2.81-2.81c.8-.78.8-2.07 0-2.86zM5.41 20L4 18.59l7.72-7.72 1.47 1.35L5.41 20z"/>
+  </svg>
+      </button>
+
+  <style>
+    .colab-df-container {
+      display:flex;
+      flex-wrap:wrap;
+      gap: 12px;
+    }
+
+    .colab-df-convert {
+      background-color: #E8F0FE;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      fill: #1967D2;
+      height: 32px;
+      padding: 0 0 0 0;
+      width: 32px;
+    }
+
+    .colab-df-convert:hover {
+      background-color: #E2EBFA;
+      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
+      fill: #174EA6;
+    }
+
+    [theme=dark] .colab-df-convert {
+      background-color: #3B4455;
+      fill: #D2E3FC;
+    }
+
+    [theme=dark] .colab-df-convert:hover {
+      background-color: #434B5C;
+      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
+      fill: #FFFFFF;
+    }
+  </style>
+
+      <script>
+        const buttonEl =
+          document.querySelector('#df-dde6f08b-eea7-4727-bcb4-fc2f5db49366 button.colab-df-convert');
+        buttonEl.style.display =
+          google.colab.kernel.accessAllowed ? 'block' : 'none';
+
+        async function convertToInteractive(key) {
+          const element = document.querySelector('#df-dde6f08b-eea7-4727-bcb4-fc2f5db49366');
+          const dataTable =
+            await google.colab.kernel.invokeFunction('convertToInteractive',
+                                                     [key], {});
+          if (!dataTable) return;
+
+          const docLinkHtml = 'Like what you see? Visit the ' +
+            '<a target="_blank" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'
+            + ' to learn more about interactive tables.';
+          element.innerHTML = '';
+          dataTable['output_type'] = 'display_data';
+          await google.colab.output.renderOutput(dataTable, element);
+          const docLink = document.createElement('div');
+          docLink.innerHTML = docLinkHtml;
+          element.appendChild(docLink);
+        }
+      </script>
+    </div>
+  </div>
+</div></div>
+</div>
+<p>We will drop the <strong>‘publish_date’</strong> column as it is useless for our discussion.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># drop the publish date.</span>
+<span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;Judul&#39;</span><span class="p">,</span><span class="s1">&#39;Penulis&#39;</span><span class="p">,</span><span class="s1">&#39;Pembimbing 1&#39;</span><span class="p">,</span><span class="s1">&#39;Pembimbing 2&#39;</span><span class="p">,</span><span class="s1">&#39;Kata Kunci&#39;</span><span class="p">,</span><span class="s1">&#39;Label&#39;</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">93</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+  <div id="df-32c05dfa-139b-4cfb-9c33-7b410b29f88b">
+    <div class="colab-df-container">
+      <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>abstrak</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Di Indonesia masalah perkembangan gizi adalah ...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Seiring perkembangan teknologi yang ada diduni...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Berjalannya koneksi jaringan komputer dengan l...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Web server adalah sebuah perangkat lunak serve...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Sistem informasi pengolahan data yang dibutuhk...</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>87</th>
+      <td>Pengenalan tulisan tangan merupakan topik pene...</td>
+    </tr>
+    <tr>
+      <th>88</th>
+      <td>Kantor Badan Kepegawaian kota Bangkalan adalah...</td>
+    </tr>
+    <tr>
+      <th>89</th>
+      <td>Penyusunan Sistem Pendukung Keputusan pemiliha...</td>
+    </tr>
+    <tr>
+      <th>90</th>
+      <td>Sidik jari adalah salah satu karakteristik fis...</td>
+    </tr>
+    <tr>
+      <th>91</th>
+      <td>Pelayanan makanan bagi pasien rawat inap di Ru...</td>
+    </tr>
+  </tbody>
+</table>
+<p>92 rows × 1 columns</p>
+</div>
+      <button class="colab-df-convert" onclick="convertToInteractive('df-32c05dfa-139b-4cfb-9c33-7b410b29f88b')"
+              title="Convert this dataframe to an interactive table."
+              style="display:none;">
+
+  <svg xmlns="http://www.w3.org/2000/svg" height="24px"viewBox="0 0 24 24"
+       width="24px">
+    <path d="M0 0h24v24H0V0z" fill="none"/>
+    <path d="M18.56 5.44l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94zm-11 1L8.5 8.5l.94-2.06 2.06-.94-2.06-.94L8.5 2.5l-.94 2.06-2.06.94zm10 10l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94z"/><path d="M17.41 7.96l-1.37-1.37c-.4-.4-.92-.59-1.43-.59-.52 0-1.04.2-1.43.59L10.3 9.45l-7.72 7.72c-.78.78-.78 2.05 0 2.83L4 21.41c.39.39.9.59 1.41.59.51 0 1.02-.2 1.41-.59l7.78-7.78 2.81-2.81c.8-.78.8-2.07 0-2.86zM5.41 20L4 18.59l7.72-7.72 1.47 1.35L5.41 20z"/>
+  </svg>
+      </button>
+
+  <style>
+    .colab-df-container {
+      display:flex;
+      flex-wrap:wrap;
+      gap: 12px;
+    }
+
+    .colab-df-convert {
+      background-color: #E8F0FE;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      fill: #1967D2;
+      height: 32px;
+      padding: 0 0 0 0;
+      width: 32px;
+    }
+
+    .colab-df-convert:hover {
+      background-color: #E2EBFA;
+      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
+      fill: #174EA6;
+    }
+
+    [theme=dark] .colab-df-convert {
+      background-color: #3B4455;
+      fill: #D2E3FC;
+    }
+
+    [theme=dark] .colab-df-convert:hover {
+      background-color: #434B5C;
+      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
+      fill: #FFFFFF;
+    }
+  </style>
+
+      <script>
+        const buttonEl =
+          document.querySelector('#df-32c05dfa-139b-4cfb-9c33-7b410b29f88b button.colab-df-convert');
+        buttonEl.style.display =
+          google.colab.kernel.accessAllowed ? 'block' : 'none';
+
+        async function convertToInteractive(key) {
+          const element = document.querySelector('#df-32c05dfa-139b-4cfb-9c33-7b410b29f88b');
+          const dataTable =
+            await google.colab.kernel.invokeFunction('convertToInteractive',
+                                                     [key], {});
+          if (!dataTable) return;
+
+          const docLinkHtml = 'Like what you see? Visit the ' +
+            '<a target="_blank" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'
+            + ' to learn more about interactive tables.';
+          element.innerHTML = '';
+          dataTable['output_type'] = 'display_data';
+          await google.colab.output.renderOutput(dataTable, element);
+          const docLink = document.createElement('div');
+          docLink.innerHTML = docLinkHtml;
+          element.appendChild(docLink);
+        }
+      </script>
+    </div>
+  </div>
+</div></div>
+</div>
+</section>
+<section id="data-cleaning-pre-processing">
+<h2>DATA CLEANING &amp; PRE-PROCESSING<a class="headerlink" href="#data-cleaning-pre-processing" title="Permalink to this headline">#</a></h2>
+<p>Here I have done the data pre-processing. I have used the lemmatizer and can also use the stemmer. Also the stop words have been used along with the words wit lenght shorter than 3 characters to reduce some stray words.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">clean_text</span><span class="p">(</span><span class="n">headline</span><span class="p">):</span>
+  <span class="n">le</span><span class="o">=</span><span class="n">WordNetLemmatizer</span><span class="p">()</span>
+  <span class="n">word_tokens</span><span class="o">=</span><span class="n">word_tokenize</span><span class="p">(</span><span class="n">headline</span><span class="p">)</span>
+  <span class="n">tokens</span><span class="o">=</span><span class="p">[</span><span class="n">le</span><span class="o">.</span><span class="n">lemmatize</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">word_tokens</span> <span class="k">if</span> <span class="n">w</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_words</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">3</span><span class="p">]</span>
+  <span class="n">cleaned_text</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">cleaned_text</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># time taking</span>
+<span class="kn">import</span> <span class="nn">nltk</span>
+<span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;wordnet&#39;</span><span class="p">)</span>
+<span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;punkt&#39;</span><span class="p">)</span>
+<span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;omw-1.4&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;abstrak_cleaned_text&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;abstrak&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">clean_text</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[nltk_data] Downloading package wordnet to /root/nltk_data...
+[nltk_data]   Package wordnet is already up-to-date!
+[nltk_data] Downloading package punkt to /root/nltk_data...
+[nltk_data]   Package punkt is already up-to-date!
+[nltk_data] Downloading package omw-1.4 to /root/nltk_data...
+[nltk_data]   Unzipping corpora/omw-1.4.zip.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">93</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+  <div id="df-40c3f3ad-bd87-4585-ba24-0f065075a80d">
+    <div class="colab-df-container">
+      <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>abstrak</th>
+      <th>abstrak_cleaned_text</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Di Indonesia masalah perkembangan gizi adalah ...</td>
+      <td>Indonesia perkembangan gizi perhatian Jika sta...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Seiring perkembangan teknologi yang ada diduni...</td>
+      <td>Seiring perkembangan teknologi didunia muncul ...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Berjalannya koneksi jaringan komputer dengan l...</td>
+      <td>Berjalannya koneksi jaringan komputer lancar g...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Web server adalah sebuah perangkat lunak serve...</td>
+      <td>server perangkat lunak server berfungsi meneri...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Sistem informasi pengolahan data yang dibutuhk...</td>
+      <td>Sistem informasi pengolahan data dibutuhkan or...</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>87</th>
+      <td>Pengenalan tulisan tangan merupakan topik pene...</td>
+      <td>Pengenalan tulisan tangan topik penelitian pop...</td>
+    </tr>
+    <tr>
+      <th>88</th>
+      <td>Kantor Badan Kepegawaian kota Bangkalan adalah...</td>
+      <td>Kantor Badan Kepegawaian kota Bangkalan instan...</td>
+    </tr>
+    <tr>
+      <th>89</th>
+      <td>Penyusunan Sistem Pendukung Keputusan pemiliha...</td>
+      <td>Penyusunan Sistem Pendukung Keputusan pemiliha...</td>
+    </tr>
+    <tr>
+      <th>90</th>
+      <td>Sidik jari adalah salah satu karakteristik fis...</td>
+      <td>Sidik jari salah karakteristik fisik manusia i...</td>
+    </tr>
+    <tr>
+      <th>91</th>
+      <td>Pelayanan makanan bagi pasien rawat inap di Ru...</td>
+      <td>Pelayanan makanan pasien rawat inap Rumah Saki...</td>
+    </tr>
+  </tbody>
+</table>
+<p>92 rows × 2 columns</p>
+</div>
+      <button class="colab-df-convert" onclick="convertToInteractive('df-40c3f3ad-bd87-4585-ba24-0f065075a80d')"
+              title="Convert this dataframe to an interactive table."
+              style="display:none;">
+
+  <svg xmlns="http://www.w3.org/2000/svg" height="24px"viewBox="0 0 24 24"
+       width="24px">
+    <path d="M0 0h24v24H0V0z" fill="none"/>
+    <path d="M18.56 5.44l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94zm-11 1L8.5 8.5l.94-2.06 2.06-.94-2.06-.94L8.5 2.5l-.94 2.06-2.06.94zm10 10l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94z"/><path d="M17.41 7.96l-1.37-1.37c-.4-.4-.92-.59-1.43-.59-.52 0-1.04.2-1.43.59L10.3 9.45l-7.72 7.72c-.78.78-.78 2.05 0 2.83L4 21.41c.39.39.9.59 1.41.59.51 0 1.02-.2 1.41-.59l7.78-7.78 2.81-2.81c.8-.78.8-2.07 0-2.86zM5.41 20L4 18.59l7.72-7.72 1.47 1.35L5.41 20z"/>
+  </svg>
+      </button>
+
+  <style>
+    .colab-df-container {
+      display:flex;
+      flex-wrap:wrap;
+      gap: 12px;
+    }
+
+    .colab-df-convert {
+      background-color: #E8F0FE;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      fill: #1967D2;
+      height: 32px;
+      padding: 0 0 0 0;
+      width: 32px;
+    }
+
+    .colab-df-convert:hover {
+      background-color: #E2EBFA;
+      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
+      fill: #174EA6;
+    }
+
+    [theme=dark] .colab-df-convert {
+      background-color: #3B4455;
+      fill: #D2E3FC;
+    }
+
+    [theme=dark] .colab-df-convert:hover {
+      background-color: #434B5C;
+      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
+      fill: #FFFFFF;
+    }
+  </style>
+
+      <script>
+        const buttonEl =
+          document.querySelector('#df-40c3f3ad-bd87-4585-ba24-0f065075a80d button.colab-df-convert');
+        buttonEl.style.display =
+          google.colab.kernel.accessAllowed ? 'block' : 'none';
+
+        async function convertToInteractive(key) {
+          const element = document.querySelector('#df-40c3f3ad-bd87-4585-ba24-0f065075a80d');
+          const dataTable =
+            await google.colab.kernel.invokeFunction('convertToInteractive',
+                                                     [key], {});
+          if (!dataTable) return;
+
+          const docLinkHtml = 'Like what you see? Visit the ' +
+            '<a target="_blank" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'
+            + ' to learn more about interactive tables.';
+          element.innerHTML = '';
+          dataTable['output_type'] = 'display_data';
+          await google.colab.output.renderOutput(dataTable, element);
+          const docLink = document.createElement('div');
+          docLink.innerHTML = docLinkHtml;
+          element.appendChild(docLink);
+        }
+      </script>
+    </div>
+  </div>
+</div></div>
+</div>
+<p>Can see the difference after removal of stopwords and some shorter words. aslo the words have been lemmatized as in <strong>‘calls’—&gt;’call’.</strong></p>
+<p>Now drop the unpre-processed column.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;abstrak&#39;</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">93</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+  <div id="df-85490102-f287-49c7-8f37-aa2fd22989e4">
+    <div class="colab-df-container">
+      <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>abstrak_cleaned_text</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Indonesia perkembangan gizi perhatian Jika sta...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Seiring perkembangan teknologi didunia muncul ...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Berjalannya koneksi jaringan komputer lancar g...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>server perangkat lunak server berfungsi meneri...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Sistem informasi pengolahan data dibutuhkan or...</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>87</th>
+      <td>Pengenalan tulisan tangan topik penelitian pop...</td>
+    </tr>
+    <tr>
+      <th>88</th>
+      <td>Kantor Badan Kepegawaian kota Bangkalan instan...</td>
+    </tr>
+    <tr>
+      <th>89</th>
+      <td>Penyusunan Sistem Pendukung Keputusan pemiliha...</td>
+    </tr>
+    <tr>
+      <th>90</th>
+      <td>Sidik jari salah karakteristik fisik manusia i...</td>
+    </tr>
+    <tr>
+      <th>91</th>
+      <td>Pelayanan makanan pasien rawat inap Rumah Saki...</td>
+    </tr>
+  </tbody>
+</table>
+<p>92 rows × 1 columns</p>
+</div>
+      <button class="colab-df-convert" onclick="convertToInteractive('df-85490102-f287-49c7-8f37-aa2fd22989e4')"
+              title="Convert this dataframe to an interactive table."
+              style="display:none;">
+
+  <svg xmlns="http://www.w3.org/2000/svg" height="24px"viewBox="0 0 24 24"
+       width="24px">
+    <path d="M0 0h24v24H0V0z" fill="none"/>
+    <path d="M18.56 5.44l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94zm-11 1L8.5 8.5l.94-2.06 2.06-.94-2.06-.94L8.5 2.5l-.94 2.06-2.06.94zm10 10l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94z"/><path d="M17.41 7.96l-1.37-1.37c-.4-.4-.92-.59-1.43-.59-.52 0-1.04.2-1.43.59L10.3 9.45l-7.72 7.72c-.78.78-.78 2.05 0 2.83L4 21.41c.39.39.9.59 1.41.59.51 0 1.02-.2 1.41-.59l7.78-7.78 2.81-2.81c.8-.78.8-2.07 0-2.86zM5.41 20L4 18.59l7.72-7.72 1.47 1.35L5.41 20z"/>
+  </svg>
+      </button>
+
+  <style>
+    .colab-df-container {
+      display:flex;
+      flex-wrap:wrap;
+      gap: 12px;
+    }
+
+    .colab-df-convert {
+      background-color: #E8F0FE;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      fill: #1967D2;
+      height: 32px;
+      padding: 0 0 0 0;
+      width: 32px;
+    }
+
+    .colab-df-convert:hover {
+      background-color: #E2EBFA;
+      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
+      fill: #174EA6;
+    }
+
+    [theme=dark] .colab-df-convert {
+      background-color: #3B4455;
+      fill: #D2E3FC;
+    }
+
+    [theme=dark] .colab-df-convert:hover {
+      background-color: #434B5C;
+      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
+      fill: #FFFFFF;
+    }
+  </style>
+
+      <script>
+        const buttonEl =
+          document.querySelector('#df-85490102-f287-49c7-8f37-aa2fd22989e4 button.colab-df-convert');
+        buttonEl.style.display =
+          google.colab.kernel.accessAllowed ? 'block' : 'none';
+
+        async function convertToInteractive(key) {
+          const element = document.querySelector('#df-85490102-f287-49c7-8f37-aa2fd22989e4');
+          const dataTable =
+            await google.colab.kernel.invokeFunction('convertToInteractive',
+                                                     [key], {});
+          if (!dataTable) return;
+
+          const docLinkHtml = 'Like what you see? Visit the ' +
+            '<a target="_blank" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'
+            + ' to learn more about interactive tables.';
+          element.innerHTML = '';
+          dataTable['output_type'] = 'display_data';
+          await google.colab.output.renderOutput(dataTable, element);
+          const docLink = document.createElement('div');
+          docLink.innerHTML = docLinkHtml;
+          element.appendChild(docLink);
+        }
+      </script>
+    </div>
+  </div>
+</div></div>
+</div>
+<p>We can also see any particular news headline.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;abstrak_cleaned_text&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Indonesia perkembangan gizi perhatian Jika status gizinya mengontrol gizi dibutuhkan tubuh Dalam penelitian dirancang aplikasi sistem pendukung keputusan menentukan status gizi pasien solusi makanan pasien sesuai riwayat penyakit derita pasien Sistem dirancang berbasis memudahkan admin ahli gizi rumah sakit penentuan status gizi pasien Diharapkan aplikasi efisien efektifitas kinerja Metode penelitian Naïve Bayes Classifier Metode terbaru memprediksi probabilitas.Metode Naïve bayes Classifier prose penentuan perhitungan probabilitas status gizi Dimana dicari nilai probabilitas terbesar kesimpulan penentuan status gizi Metode diterapkan studi Sistem Penentuan Status Gizi Pasien hasil akurasi terbesar&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="extracting-the-features-and-creating-the-document-term-matrix-dtm">
+<h2>EXTRACTING THE FEATURES AND CREATING THE DOCUMENT-TERM-MATRIX ( DTM )<a class="headerlink" href="#extracting-the-features-and-creating-the-document-term-matrix-dtm" title="Permalink to this headline">#</a></h2>
+<p>In DTM the values are the TFidf values.</p>
+<p>Also I have specified some parameters of the Tfidf vectorizer.</p>
+<p>Some important points:-</p>
+<p><strong>1) LSA is generally implemented with Tfidf values everywhere and not with the Count Vectorizer.</strong></p>
+<p><strong>2) max_features depends on your computing power and also on eval. metric (coherence score is a metric for topic model). Try the value that gives best eval. metric and doesn’t limits processing power.</strong></p>
+<p><strong>3) Default values for min_df &amp; max_df worked well.</strong></p>
+<p><strong>4) Can try different values for ngram_range.</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vect</span> <span class="o">=</span><span class="n">TfidfVectorizer</span><span class="p">(</span><span class="n">stop_words</span><span class="o">=</span><span class="n">stop_words</span><span class="p">,</span><span class="n">max_features</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span> <span class="c1"># to play with. min_df,max_df,max_features etc...</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vect_text</span><span class="o">=</span><span class="n">vect</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;abstrak_cleaned_text&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/usr/local/lib/python3.7/dist-packages/sklearn/feature_extraction/text.py:401: UserWarning: Your stop_words may be inconsistent with your preprocessing. Tokenizing the stop words generated tokens [&#39;baiknya&#39;, &#39;berkali&#39;, &#39;kali&#39;, &#39;kurangnya&#39;, &#39;mata&#39;, &#39;olah&#39;, &#39;sekurang&#39;, &#39;setidak&#39;, &#39;tama&#39;, &#39;tidaknya&#39;] not in stop_words.
+  % sorted(inconsistent)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="we-can-now-see-the-most-frequent-and-rare-words-in-the-news-headlines-based-on-idf-score-the-lesser-the-value-more-common-is-the-word-in-the-news-headlines">
+<h2>We can now see the most frequent and rare words in the news headlines based on idf score. The lesser the value; more common is the word in the news headlines.<a class="headerlink" href="#we-can-now-see-the-most-frequent-and-rare-words-in-the-news-headlines-based-on-idf-score-the-lesser-the-value-more-common-is-the-word-in-the-news-headlines" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">vect_text</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">vect_text</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(92, 1000)
+  (0, 18)	0.048358944386697966
+  (0, 214)	0.025178616635927558
+  (0, 865)	0.05786503972311729
+  (0, 164)	0.05183720921658676
+  (0, 300)	0.061862610278876344
+  (0, 906)	0.15886792684681533
+  (0, 528)	0.037596204970856036
+  (0, 137)	0.0670163750884792
+  (0, 149)	0.04944502194394788
+  (0, 683)	0.054598786753550725
+  (0, 748)	0.029394219819368697
+  (0, 739)	0.22284059584141444
+  (0, 431)	0.0670163750884792
+  (0, 903)	0.07943396342340767
+  (0, 102)	0.14856039722760964
+  (0, 56)	0.14856039722760964
+  (0, 524)	0.17339557389746657
+  (0, 493)	0.10929932137989017
+  (0, 312)	0.05316483820556693
+  (0, 172)	0.054598786753550725
+  (0, 141)	0.054598786753550725
+  (0, 622)	0.23901020625261435
+  (0, 782)	0.0670163750884792
+  (0, 779)	0.06425479755151522
+  (0, 12)	0.07428019861380482
+  :	:
+  (91, 426)	0.07570825271127254
+  (91, 134)	0.06698614467804477
+  (91, 21)	0.070796216199383
+  (91, 876)	0.07570825271127254
+  (91, 498)	0.070796216199383
+  (91, 179)	0.06387308957438843
+  (91, 579)	0.05694996294939387
+  (91, 445)	0.06387308957438843
+  (91, 268)	0.1413776697768444
+  (91, 476)	0.33493072339022384
+  (91, 957)	0.04331581840427656
+  (91, 683)	0.05203792643750433
+  (91, 493)	0.07812962133173197
+  (91, 141)	0.05203792643750433
+  (91, 782)	0.12774617914877687
+  (91, 779)	0.12248207797492983
+  (91, 660)	0.06124103898746491
+  (91, 816)	0.1325748820736638
+  (91, 374)	0.3785412635563627
+  (91, 569)	0.566369729595064
+  (91, 290)	0.10407585287500866
+  (91, 619)	0.10704720981136753
+  (91, 833)	0.05208641422115465
+  (91, 34)	0.036971544879933815
+  (91, 205)	0.06698614467804477
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">idf</span><span class="o">=</span><span class="n">vect</span><span class="o">.</span><span class="n">idf_</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dd</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">vect</span><span class="o">.</span><span class="n">get_feature_names</span><span class="p">(),</span> <span class="n">idf</span><span class="p">))</span>
+<span class="n">l</span><span class="o">=</span><span class="nb">sorted</span><span class="p">(</span><span class="n">dd</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="p">(</span><span class="n">dd</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">)</span>
+<span class="c1"># print(l)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">l</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dd</span><span class="p">[</span><span class="s1">&#39;hasil&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dd</span><span class="p">[</span><span class="s1">&#39;wisata&#39;</span><span class="p">])</span>  <span class="c1"># police is most common and forecast is least common among the news headlines.</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>hasil wisata
+1.4054651081081644
+4.839452312593311
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/usr/local/lib/python3.7/dist-packages/sklearn/utils/deprecation.py:87: FutureWarning: Function get_feature_names is deprecated; get_feature_names is deprecated in 1.0 and will be removed in 1.2. Please use get_feature_names_out instead.
+  warnings.warn(msg, category=FutureWarning)
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can therefore see that on the basis of the <strong>idf value</strong> , <strong>‘police’</strong> is the <strong>most frequent</strong> word while <strong>‘forecast’</strong> is <strong>least frequently</strong> occuring among the news.</p>
+</section>
+<section id="topic-modelling">
+<h2>TOPIC MODELLING<a class="headerlink" href="#topic-modelling" title="Permalink to this headline">#</a></h2>
+</section>
+</section>
+<section id="latent-semantic-analysis-lsa">
+<h1>Latent Semantic Analysis (LSA)<a class="headerlink" href="#latent-semantic-analysis-lsa" title="Permalink to this headline">#</a></h1>
+<p>The first approach that I have used is the LSA. <strong>LSA is basically singular value decomposition.</strong></p>
+<p><strong>SVD decomposes the original DTM into three matrices S=U.(sigma).(V.T). Here the matrix U denotes the document-topic matrix while (V) is the topic-term matrix.</strong></p>
+<p><strong>Each row of the matrix U(document-term matrix) is the vector representation of the corresponding document. The length of these vectors is the number of desired topics. Vector representation for the terms in our data can be found in the matrix V (term-topic matrix).</strong></p>
+<p>So, SVD gives us vectors for every document and term in our data. The length of each vector would be k. <strong>We can then use these vectors to find similar words and similar documents using the cosine similarity method.</strong></p>
+<p>We can use the truncatedSVD function to implement LSA. The n_components parameter is the number of topics we wish to extract.
+The model is then fit and transformed on the result given by vectorizer.</p>
+<p><strong>Lastly note that LSA and LSI (I for indexing) are the same and the later is just sometimes used in information retrieval contexts.</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">TruncatedSVD</span>
+<span class="n">lsa_model</span> <span class="o">=</span> <span class="n">TruncatedSVD</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="s1">&#39;randomized&#39;</span><span class="p">,</span> <span class="n">n_iter</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="n">lsa_top</span><span class="o">=</span><span class="n">lsa_model</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">vect_text</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">lsa_top</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">lsa_top</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>  <span class="c1"># (no_of_doc*no_of_topics)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 2.19197403e-01 -1.70211040e-02  5.14556885e-02  9.58213042e-02
+  -1.59253260e-01  7.10236071e-01 -1.47871616e-01 -2.51457379e-01
+  -9.17880155e-02  1.28422405e-02]
+ [ 1.20164885e-01 -4.25647269e-02 -8.79784424e-02  1.84611397e-01
+   1.23380150e-01 -2.02122572e-02 -3.17128944e-02 -8.14278693e-02
+   1.19033970e-03  2.71258306e-01]
+ [ 8.35455192e-02 -4.62389407e-02 -5.17464101e-02  5.43276079e-02
+   3.33569265e-04  1.05403915e-02  2.59849965e-02  4.30188960e-02
+   1.81783587e-02 -8.59921873e-02]
+ [ 9.50874429e-02 -9.71332259e-03  1.46483579e-02  6.60138391e-02
+   2.75825451e-02  5.71392595e-02 -2.21629196e-02  5.62034180e-02
+  -4.83092592e-03 -7.70516941e-02]
+ [ 3.38361679e-01 -2.12584957e-01 -1.92196604e-01 -1.39155752e-01
+  -2.03618714e-01 -7.62859808e-02  4.67466528e-02  1.38053459e-01
+  -3.08585631e-02 -8.63984667e-02]
+ [ 1.23766324e-01 -2.84390366e-02 -8.07551822e-02  3.75084907e-01
+   2.14113523e-01  2.92662780e-02  3.71370319e-02  1.78463692e-01
+   1.00000252e-01 -2.36326206e-01]
+ [ 2.32341159e-01  2.60201388e-01 -7.81598860e-02 -5.70377063e-02
+   2.37396995e-02  1.26372763e-02  1.26222691e-01 -1.23502511e-02
+   9.46175484e-03  3.77879715e-02]
+ [ 1.22434474e-01 -4.66617810e-03 -9.28809687e-02  4.03191806e-01
+   2.42776730e-01  4.92730311e-02  4.60408440e-02  1.40268646e-01
+   5.63557376e-02 -2.34372299e-01]
+ [ 3.02437842e-01 -1.98091082e-01  2.06094530e-01 -2.97318347e-01
+   4.83822038e-01  3.27620144e-03 -6.95732707e-02 -1.98051312e-01
+   1.13486876e-01  7.56964107e-02]
+ [ 1.84365099e-01 -3.87396043e-03  2.33572790e-01  4.44710399e-02
+  -8.92523956e-03 -6.74897421e-02 -5.12551387e-02  3.12982419e-02
+  -4.30036622e-02  6.58261740e-02]
+ [ 1.51870757e-01 -9.78257033e-03  3.04647760e-01  1.57358643e-01
+  -1.72797346e-01 -1.48136403e-01  1.05532670e-01 -2.12316346e-01
+   2.22022208e-01  8.39756665e-03]
+ [ 1.12636018e-01 -6.66101274e-02 -7.96425690e-02  1.90436050e-02
+  -7.99579697e-02 -7.34612469e-02 -2.90540961e-02  2.39860971e-02
+  -8.49042714e-02  4.86235712e-02]
+ [ 1.00277174e-01 -5.08179999e-02 -5.57313021e-02  6.61299961e-03
+  -6.80000830e-02  1.36505184e-01 -2.95618708e-02 -8.25772388e-03
+   1.97215585e-03 -2.68722215e-02]
+ [ 3.77552513e-01 -2.65551575e-01 -4.20713131e-02 -3.92786046e-01
+   2.80227254e-01 -5.03055864e-02  4.68264025e-02 -1.75958345e-01
+   2.15239538e-01 -1.52474054e-01]
+ [ 2.07586995e-01 -3.66281194e-02  2.21977455e-02  1.00396231e-01
+  -1.44588915e-01 -1.03523015e-01 -4.48795284e-02 -9.65299959e-02
+  -1.28647602e-01 -6.92537965e-02]
+ [ 3.29399403e-01  4.54905450e-01  1.10107251e-02  1.59675268e-02
+   3.68346198e-02  4.42655216e-02 -1.10033286e-01 -3.13820104e-02
+   6.02989126e-02  4.40980652e-02]
+ [ 1.77802169e-01 -2.44192666e-02  5.21329303e-02 -5.52595202e-03
+  -3.58802967e-02  5.62377032e-02  3.83174569e-02 -4.34744826e-02
+  -6.04176328e-03 -2.10669691e-01]
+ [ 3.42137735e-01  3.71691485e-01 -7.41825050e-02 -8.65133298e-02
+   3.13064993e-02  6.04437094e-02  6.38269281e-01 -4.37608168e-02
+  -1.36597494e-01  1.26080790e-01]
+ [ 4.09985887e-01  6.50841709e-01 -6.96938587e-02 -9.10811815e-02
+   2.94665821e-02 -7.72290517e-02 -2.93200468e-01  2.52883740e-02
+   5.42364950e-02 -5.42137927e-02]
+ [ 1.85818205e-01 -7.46718687e-02 -5.81583677e-02 -5.61970962e-03
+  -8.21247810e-02  3.66553195e-02 -4.22292333e-02  9.10300599e-02
+   7.90382751e-02  1.08156405e-01]
+ [ 1.83473837e-01 -2.71847232e-02 -5.40498430e-02  7.66350163e-03
+  -4.22634782e-02  7.99562667e-02  4.98062009e-02  4.18692485e-02
+   4.45563181e-02 -6.51914962e-02]
+ [ 1.47285572e-01 -3.60742762e-02  1.09281315e-01  1.06180330e-01
+   3.54386160e-02  2.05565443e-02 -2.54685078e-02  6.12101278e-02
+  -2.79663362e-02 -1.14557495e-01]
+ [ 1.83537634e-01 -6.14158399e-02 -1.34730462e-01  5.28131181e-01
+   3.13253874e-01  1.29675804e-02  6.09938438e-02  1.18232728e-01
+   8.69391407e-02 -1.00446195e-01]
+ [ 2.51783986e-01 -7.70269908e-02  1.83194205e-01 -3.63275252e-02
+   4.43538502e-02  1.05210021e-01 -5.00748632e-02  1.35407438e-01
+  -1.15238024e-01  3.78613588e-02]
+ [ 1.79392684e-01  3.12219680e-02  1.06243561e-01  8.97241069e-02
+   1.57638290e-02  5.83269207e-02  6.12543861e-02  1.80565228e-02
+  -3.69356258e-02 -1.02180078e-01]
+ [ 2.39083202e-01 -1.66797068e-01 -1.11895382e-01  1.52501067e-01
+   3.74878731e-01 -8.91999722e-02 -1.05947444e-01 -2.80798207e-01
+  -6.19375851e-02  2.34778822e-01]
+ [ 1.26608934e-01 -7.82490132e-02 -4.47074545e-02 -2.83573732e-02
+  -6.07115845e-02 -4.09382271e-03 -1.52273744e-02  6.48864065e-02
+  -2.60101241e-02 -5.32358865e-02]
+ [ 1.80994909e-01 -6.83077382e-02  1.91525956e-01  6.16453109e-02
+  -1.61385624e-01 -4.67661374e-02 -1.09526702e-02  1.29783892e-01
+  -7.77018177e-02  3.86016072e-02]
+ [ 1.36341245e-01 -2.82165366e-02 -9.40485934e-02  4.70769914e-01
+   2.92112325e-01  6.22375268e-02  6.46668075e-02  1.74351882e-01
+   1.19357268e-01 -2.42078796e-01]
+ [ 1.33046563e-01 -4.22101234e-02 -5.28023653e-02 -5.89761103e-02
+   4.75181520e-02 -3.18080960e-02  1.78964505e-03 -4.58465148e-02
+   4.74457509e-02  1.05608391e-02]
+ [ 1.72313476e-01 -6.09415970e-02 -1.21302469e-01  2.85131819e-01
+   2.31919833e-01 -7.76849075e-02 -2.17184272e-02 -1.80172736e-01
+  -9.20099083e-03  3.93964808e-01]
+ [ 1.78382691e-01 -3.46775144e-02  2.95903980e-01  1.63664386e-01
+  -1.96020328e-01 -1.79224341e-01  4.33639531e-02 -2.33426060e-01
+   1.80599720e-01  8.27989749e-02]
+ [ 2.13861665e-01 -6.51147895e-02  4.58541412e-02  2.79043388e-02
+  -6.75896769e-02  5.64041520e-02  4.70484903e-02  2.35952910e-02
+  -1.39092777e-02 -1.83556763e-01]
+ [ 1.37325642e-01 -2.28838123e-02 -7.84187417e-02  1.88020574e-01
+   9.53642206e-02  8.24804796e-03  4.13136400e-02 -5.92716112e-02
+  -7.13552538e-02  1.64877751e-01]
+ [ 2.03734972e-01 -4.16823243e-02  1.39232485e-01  1.22904640e-01
+  -1.49179865e-01 -3.89816114e-02  7.64671774e-02 -1.76120694e-02
+  -1.15336450e-01 -1.80873069e-01]
+ [ 1.93937143e-01 -5.18781512e-02 -3.93721991e-02 -2.38183475e-02
+  -4.84619414e-02  3.46453718e-02 -3.55074238e-02  8.08117666e-02
+   3.27818204e-02  4.76057613e-04]
+ [ 2.67507442e-01 -7.14138870e-02  3.22226628e-01  1.57206156e-01
+  -2.17360946e-01 -1.08792101e-01  1.02976097e-01 -1.47400266e-01
+   9.67727670e-02 -1.11634506e-01]
+ [ 1.54640924e-01 -6.73161825e-02 -8.20482761e-02  2.19223692e-01
+   1.60297128e-01  1.02185019e-02  2.70146834e-02 -6.42611903e-03
+   6.52832299e-02  1.00153442e-02]
+ [ 1.35709568e-01 -2.15136513e-02  3.00828480e-02  3.78429437e-02
+  -6.31785425e-02  2.38460808e-03  1.24456374e-02 -4.23653770e-02
+  -5.36689077e-02 -1.98816889e-03]
+ [ 1.65837650e-01 -1.05893607e-02  9.15839632e-03  4.35886908e-02
+  -1.13179628e-01  6.03866642e-01 -1.25948323e-01 -3.02044528e-01
+  -2.52537678e-02 -6.48466027e-02]
+ [ 2.04069336e-01 -7.11487825e-02  2.85672412e-01  1.27690004e-01
+  -1.91803911e-01 -1.53913525e-01  5.00338903e-03 -8.53837894e-02
+   7.32876788e-02  5.75528500e-02]
+ [ 2.50934342e-01 -1.60740078e-01 -2.49066964e-01  8.87484635e-02
+  -3.95953833e-02 -2.31017731e-01 -1.51244274e-01 -3.11790412e-01
+  -3.36620217e-01  9.72006976e-02]
+ [ 3.36295485e-01 -1.82744657e-01  3.90667868e-01 -2.40382730e-01
+   3.66358795e-01  1.01731441e-01 -6.52916066e-02  1.64962859e-01
+  -8.15570104e-02  1.36846900e-01]
+ [ 2.49191934e-01 -1.12468485e-01 -1.98954912e-01 -1.95764271e-01
+  -5.37618913e-02 -2.81173833e-02  1.12761737e-01 -1.61224944e-02
+   1.50944230e-01 -2.67582381e-01]
+ [ 3.02478412e-01 -1.90299319e-01 -2.99269763e-01  2.25789184e-02
+  -6.32187965e-02 -2.21690092e-01 -5.77515353e-02 -2.92158136e-01
+  -2.63278359e-01 -2.26054756e-02]
+ [ 2.50794468e-01 -1.14499999e-01 -2.19689662e-01 -7.83246427e-02
+  -1.21878961e-01  1.38407907e-02  3.83655582e-02  6.78445728e-02
+   2.27019708e-01  3.96103601e-02]
+ [ 2.04369391e-01  2.91299125e-01 -3.62881047e-03 -2.91039860e-02
+   6.47641806e-03 -1.86881992e-02 -1.18386850e-01 -4.16794102e-03
+   8.62006526e-02 -4.16816757e-02]
+ [ 1.78496603e-01 -1.19603296e-01 -1.49487717e-01  3.30892766e-02
+  -1.43263681e-01 -1.28777070e-01 -7.72741040e-02 -7.91922163e-02
+  -2.05782094e-01  2.78328074e-02]
+ [ 1.49585079e-01  1.92660556e-01 -4.52483214e-02 -8.50913059e-03
+   2.50389915e-02  6.94484891e-02  4.76909632e-01 -3.34589227e-02
+  -1.34778703e-01  1.54999713e-01]
+ [ 2.74043607e-01  4.95824917e-01 -2.21079290e-02 -4.75534381e-02
+   4.07449853e-02 -4.63955880e-02 -2.36299676e-01  2.04035455e-02
+   1.36094950e-01  2.84315749e-02]
+ [ 2.94477494e-01 -8.47813263e-02 -2.28275684e-02 -2.41171276e-01
+   1.04512145e-01  1.18531949e-02  9.11204900e-02 -1.49163931e-01
+   1.29853626e-01 -3.49765001e-01]
+ [ 2.34294364e-01 -8.09990080e-02  2.29914977e-01  4.86015814e-02
+  -8.94170556e-02  1.01059824e-02 -1.60165038e-02  2.89416748e-01
+  -2.27975098e-01  1.72042993e-02]
+ [ 1.97637287e-01  4.17258813e-02  4.57717017e-02  7.92391949e-02
+   2.89243524e-03  1.65851194e-02  3.48203664e-02  4.15179400e-03
+  -1.11790600e-03 -6.88657022e-03]
+ [ 1.94770473e-01 -2.88530691e-02  8.30178657e-02  8.51979104e-03
+  -1.68632175e-01 -8.24308886e-02 -6.35607350e-02  2.18705459e-01
+  -1.59777492e-01  5.69103362e-02]
+ [ 1.46488216e-01 -7.05876028e-02 -1.57042494e-01  2.78905569e-01
+   1.13275275e-01  3.25601851e-02  2.92898344e-03  7.37734949e-02
+   5.40506756e-02  6.36752402e-02]
+ [ 1.26555839e-01 -1.60338234e-03  1.76499726e-01  1.24413816e-01
+  -1.44745496e-01 -1.05488117e-01  2.22628048e-02 -1.36610924e-01
+   9.09844241e-02  7.97219084e-02]
+ [ 2.15116323e-01 -6.25561785e-02 -3.23614353e-02  2.37359366e-02
+  -1.03066190e-01  2.14948348e-01 -1.99694042e-02  2.44909178e-02
+   5.31724317e-02 -2.00845073e-02]
+ [ 1.73385060e-01 -4.08798053e-02  1.62814685e-01  3.77581959e-02
+  -6.14896644e-02  3.89908048e-03  1.25173741e-02  2.19729256e-01
+  -1.58961010e-01 -4.10545013e-02]
+ [ 1.99568069e-01  6.89979449e-02  5.75777001e-03  4.44569240e-02
+  -5.14524567e-02 -1.40046274e-01 -2.08907799e-01  2.77570071e-04
+  -2.23311833e-01 -1.55815808e-01]
+ [ 1.79332029e-01 -3.12957650e-02  3.25397240e-01  1.69637077e-01
+  -1.92141124e-01 -1.50031727e-01  6.03943000e-02 -1.18723667e-01
+   1.65903301e-01  1.93385396e-02]
+ [ 2.15846504e-01  1.00751904e-01 -4.63243395e-02  8.57180380e-02
+  -6.77992902e-02 -1.94632005e-01 -2.65300704e-01 -5.97565168e-02
+  -2.53463511e-01 -6.62783019e-02]
+ [ 9.64571311e-02 -1.38031299e-02  6.78143899e-03  2.52576462e-01
+   1.54390664e-01  3.99057013e-02  5.38198714e-02  7.05183606e-02
+   7.22596349e-02 -1.20751644e-01]
+ [ 2.73669524e-01 -1.27282765e-01  2.78821034e-01 -1.41371589e-01
+   1.69127662e-01  9.31803576e-02 -2.68831640e-02  2.70138978e-01
+  -1.52371047e-01  7.34445992e-02]
+ [ 1.46359221e-01 -2.07865787e-02  4.98447717e-02  5.60559831e-02
+  -5.05193915e-02  1.04324928e-01  1.63445577e-02 -1.31771978e-02
+   1.73043769e-02 -6.05040008e-02]
+ [ 3.00034560e-01  5.69324357e-01 -3.14453241e-03 -5.67865470e-02
+   5.06340751e-02 -5.99797772e-02 -2.35945928e-01  2.55667767e-02
+   1.13841705e-01  3.10104121e-02]
+ [ 1.44368980e-01 -6.89049496e-02 -3.45488870e-02 -1.18053499e-02
+  -6.85605651e-02  3.64623255e-03  5.55548691e-02  9.11374587e-02
+   7.10968838e-03 -1.00256249e-01]
+ [ 3.49660699e-01 -1.61740434e-01  4.56130419e-02 -4.39043236e-04
+  -1.44394558e-01  8.97904960e-02 -2.16043271e-02  2.92661899e-01
+  -1.86868104e-01  1.20630267e-01]
+ [ 1.30345466e-01 -6.80829814e-02 -8.14905139e-02 -2.94581361e-02
+  -8.10547900e-02 -2.03994389e-02  1.85509509e-02  1.03518233e-02
+   2.29209307e-02  5.69158059e-02]
+ [ 4.23198221e-02 -1.96722040e-02  3.66254971e-02  5.39252502e-03
+  -1.09301997e-02 -1.21464505e-02  2.73175844e-05  1.21386587e-02
+   2.16552766e-02  9.65428367e-03]
+ [ 2.82917241e-01 -1.96826865e-01 -2.23990357e-01 -1.49303089e-01
+  -5.14556393e-02 -7.68639732e-03  5.77153884e-02  1.03751171e-01
+   5.33678854e-02 -6.26288189e-02]
+ [ 4.14143810e-01  5.45387974e-01 -9.87647071e-02 -6.57175952e-02
+   1.07789772e-02 -9.09576885e-02 -2.84296293e-01  4.45915919e-02
+   7.32181981e-03 -6.48366828e-02]
+ [ 2.10206215e-01  1.65502063e-01 -2.30120006e-02 -1.54993820e-02
+   1.60759617e-02  3.03372377e-02  2.18779807e-01 -1.96287396e-02
+  -6.91154428e-02  1.36722825e-02]
+ [ 1.76708978e-01 -3.64721302e-02  2.85193186e-01  1.41910004e-01
+  -1.48286807e-01 -1.64776748e-01  7.00591690e-02 -1.96680654e-01
+   2.15025869e-01 -2.27864995e-02]
+ [ 1.63887891e-01  4.27555564e-02  3.86782324e-02  8.15779345e-02
+   4.21723371e-02  3.16259966e-02 -5.78456659e-02  1.63365843e-02
+   2.48199545e-02 -1.79233061e-01]
+ [ 1.37996243e-01 -4.45858630e-02  5.40294717e-02  6.66354500e-02
+  -8.78601994e-02 -1.05593494e-01 -4.98372558e-02 -1.27281460e-01
+  -3.54575282e-03  6.25488208e-02]
+ [ 1.70548819e-01 -5.32693838e-02  2.61535551e-01  8.14434804e-02
+  -8.58131131e-02 -9.60508975e-02  4.65278717e-02 -5.90743767e-02
+   1.01997126e-01 -4.79405233e-02]
+ [ 1.62238731e-01 -3.97932591e-02  5.44137680e-04 -3.56560476e-03
+  -9.77101752e-02 -3.73485299e-02  9.42242648e-02 -9.47422157e-02
+  -7.63013239e-03 -2.06238327e-01]
+ [ 2.73492181e-01 -1.26642313e-01 -1.58147036e-01 -1.30223750e-01
+  -7.37717069e-02 -8.48265050e-02  8.74430664e-02 -1.12836652e-01
+   5.08391364e-02 -2.09701604e-01]
+ [ 3.25212212e-01 -1.41942358e-01 -2.62730953e-01 -5.42655242e-02
+  -7.51377012e-02 -6.26631619e-02 -2.98554831e-02  5.62390432e-02
+  -5.69033890e-02 -7.45840633e-02]
+ [ 2.06729145e-01 -1.14611029e-01 -1.51006309e-01  2.05302175e-01
+   7.19630840e-02 -5.24763187e-02 -1.94569083e-02 -4.81644248e-02
+  -9.63281701e-02  2.33038479e-01]
+ [ 1.01083706e-01 -2.20668670e-02 -1.22303001e-02  6.47666510e-02
+  -1.58738703e-01  5.49419664e-01 -1.35089557e-01 -2.60734931e-01
+  -1.94079386e-02  2.51428882e-02]
+ [ 3.77479912e-01 -2.48628503e-01  2.42100806e-01 -3.15916823e-01
+   4.56082517e-01 -2.50604947e-03 -7.97900521e-02 -1.29883831e-01
+   8.92503778e-02  7.42098725e-02]
+ [ 2.82265044e-01 -1.36446639e-01 -1.80848196e-01 -1.56666969e-01
+  -6.90156471e-02 -2.46507160e-02  6.96747424e-02  4.72485233e-02
+   7.69823410e-02 -1.44596224e-01]
+ [ 2.82777231e-01 -7.49020904e-02  3.34617833e-01 -4.42688549e-02
+   3.31369193e-02 -3.24773069e-04 -4.05251065e-02  3.11958770e-01
+  -1.95936812e-01  1.18428338e-01]
+ [ 2.45609280e-01 -1.69512866e-01 -2.35036825e-01 -1.43826865e-02
+  -1.23764359e-01 -3.68327917e-02 -3.22962323e-02  5.86310771e-02
+  -1.00798844e-01  8.82355505e-02]
+ [ 2.80921719e-01 -2.00326120e-01 -2.78969978e-01 -8.06603376e-02
+  -1.06276121e-01 -3.10812872e-02 -5.82544590e-02  6.54454497e-02
+  -3.32987239e-02  7.62978919e-02]
+ [ 2.04949386e-01 -1.23929524e-01 -1.62194331e-01  7.03593512e-03
+  -2.19619059e-01  4.21719339e-02 -4.07154180e-02  2.36421555e-01
+   4.64709116e-01  3.45770972e-01]
+ [ 3.08910416e-01  3.79611603e-01 -5.20395743e-02 -7.52439793e-02
+   2.84449759e-02  7.47248692e-02  6.81486762e-01 -5.21649885e-02
+  -1.64356013e-01  1.63621785e-01]
+ [ 2.48706348e-01 -1.14357712e-01 -2.00279485e-01 -6.95395996e-03
+  -2.34985483e-01  8.12803717e-02 -3.99223738e-02  2.28366094e-01
+   5.00452123e-01  3.54414934e-01]
+ [ 1.94789710e-01 -1.70449018e-02  3.69101857e-02  2.43417773e-02
+  -7.75159708e-03  3.48770164e-02  7.09069401e-03  8.37645679e-02
+  -5.65015934e-02 -1.08239601e-03]
+ [ 1.72160871e-01  9.45473614e-02  1.86484180e-02 -4.22529592e-03
+   2.93898643e-03  2.59503470e-02  3.89139894e-02  1.44740274e-02
+  -3.38878433e-03  2.27687670e-02]
+ [ 1.41091014e-01 -5.38692449e-02  3.44567708e-02  5.43103946e-02
+  -9.00565429e-02  3.72593517e-01 -7.66592339e-02 -3.76863643e-02
+  -6.61877736e-02  5.89836639e-02]]
+(92, 10)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">l</span><span class="o">=</span><span class="n">lsa_top</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Document 0 :&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">topic</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Topic &quot;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="s2">&quot; : &quot;</span><span class="p">,</span><span class="n">topic</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
+  
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Document 0 :
+Topic  0  :  21.9197403444855
+Topic  1  :  -1.7021104044987774
+Topic  2  :  5.145568852883142
+Topic  3  :  9.58213041967027
+Topic  4  :  -15.92532604495281
+Topic  5  :  71.02360712643646
+Topic  6  :  -14.787161602895734
+Topic  7  :  -25.145737937352497
+Topic  8  :  -9.178801548761582
+Topic  9  :  1.2842240547175472
+</pre></div>
+</div>
+</div>
+</div>
+<p>Similalry for other documents we can do this. However note that values dont add to 1 as in LSA it is not probabiltiy of a topic in a document.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">lsa_model</span><span class="o">.</span><span class="n">components_</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="c1"># (no_of_topics*no_of_words)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">lsa_model</span><span class="o">.</span><span class="n">components_</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(10, 1000)
+[[ 0.00951306  0.01813183  0.01196229 ...  0.02253667  0.01368865
+   0.01281185]
+ [-0.00426404  0.01167294  0.00583792 ... -0.02642902 -0.01035341
+   0.03009457]
+ [ 0.00486915  0.02768925  0.01360272 ... -0.04537793 -0.00828642
+  -0.0054632 ]
+ ...
+ [ 0.01348743 -0.01773106 -0.02017921 ...  0.01429967  0.02152899
+   0.0030291 ]
+ [-0.00558222  0.02046885  0.00018046 ... -0.00726396  0.00300209
+   0.00240469]
+ [-0.0100132  -0.00147725  0.00172137 ...  0.0173973   0.00997085
+  -0.0053492 ]]
+</pre></div>
+</div>
+</div>
+</div>
+<section id="now-e-can-get-a-list-of-the-important-words-for-each-of-the-10-topics-as-shown-for-simplicity-here-i-have-shown-10-words-for-each-topic">
+<h2>Now e can get a list of the important words for each of the 10 topics as shown. For simplicity here I have shown 10 words for each topic.<a class="headerlink" href="#now-e-can-get-a-list-of-the-important-words-for-each-of-the-10-topics-as-shown-for-simplicity-here-i-have-shown-10-words-for-each-topic" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># most important words for each topic</span>
+<span class="n">vocab</span> <span class="o">=</span> <span class="n">vect</span><span class="o">.</span><span class="n">get_feature_names</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">comp</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lsa_model</span><span class="o">.</span><span class="n">components_</span><span class="p">):</span>
+    <span class="n">vocab_comp</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">vocab</span><span class="p">,</span> <span class="n">comp</span><span class="p">)</span>
+    <span class="n">sorted_words</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">vocab_comp</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)[:</span><span class="mi">10</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Topic &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;: &quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">sorted_words</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">end</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+         
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Topic 0: 
+sistem citra data informasi metode siswa prose hasil nilai penelitian 
+
+Topic 1: 
+citra batik tulisan tangan pengenalan fitur ekstraksi tekstur manusia gambar 
+
+Topic 2: 
+produksi kriteria beasiswa metode siswa perusahaan periode mesin alternatif nilai 
+
+Topic 3: 
+game pembelajaran mobile produksi teknologi android gerakan reality sapi virtual 
+
+Topic 4: 
+siswa game beasiswa pembelajaran virtual kriteria alternatif rating class pendidikan 
+
+Topic 5: 
+gizi status pasien balita hamil penentuan makanan aplikasi normal probabilitas 
+
+Topic 6: 
+tangan tulisan pengenalan telapak data karakter carakan huruf prose senyum 
+
+Topic 7: 
+karyawan kriteria beasiswa game perusahaan arsitektur pelanggan penilaian sistem enterprise 
+
+Topic 8: 
+arsitektur enterprise produksi bangkalan togaf siswa pelayanan data game citra 
+
+Topic 9: 
+arsitektur pembelajaran reality virtual enterprise tangan togaf bangkalan teknologi kriteria 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/usr/local/lib/python3.7/dist-packages/sklearn/utils/deprecation.py:87: FutureWarning: Function get_feature_names is deprecated; get_feature_names is deprecated in 1.0 and will be removed in 1.2. Please use get_feature_names_out instead.
+  warnings.warn(msg, category=FutureWarning)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="latent-dirichlet-allocation-lda">
+<h1>Latent Dirichlet Allocation (LDA)<a class="headerlink" href="#latent-dirichlet-allocation-lda" title="Permalink to this headline">#</a></h1>
+<p>LDA is the most popular technique.<strong>The topics then generate words based on their probability distribution. Given a dataset of documents, LDA backtracks and tries to figure out what topics would create those documents in the first place.</strong></p>
+<p><strong>To understand the maths it seems as if knowledge of Dirichlet distribution (distribution of distributions) is required which is quite intricate and left fior now.</strong></p>
+<p>To get an inituitive explanation of LDA checkout these blogs: <a class="reference external" href="https://www.analyticsvidhya.com/blog/2016/08/beginners-guide-to-topic-modeling-in-python/">this</a>  ,  <a class="reference external" href="https://tedunderwood.com/2012/04/07/topic-modeling-made-just-simple-enough/">this</a>  ,<a class="reference external" href="https://en.wikipedia.org/wiki/Topic_model">this</a>  ,  <a class="reference external" href="https://www.kaggle.com/arthurtok/spooky-nlp-and-topic-modelling-tutorial">this kernel on Kaggle</a>  ,  <a class="reference external" href="http://blog.echen.me/2011/08/22/introduction-to-latent-dirichlet-allocation/">this</a> .</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">LatentDirichletAllocation</span>
+<span class="n">lda_model</span><span class="o">=</span><span class="n">LatentDirichletAllocation</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="n">learning_method</span><span class="o">=</span><span class="s1">&#39;online&#39;</span><span class="p">,</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> 
+<span class="c1"># n_components is the number of topics</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lda_top</span><span class="o">=</span><span class="n">lda_model</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">vect_text</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">lda_top</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>  <span class="c1"># (no_of_doc,no_of_topics)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">lda_top</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(92, 10)
+[[0.01760606 0.01760575 0.84154508 0.01760615 0.01760634 0.0176062
+  0.01760619 0.01760596 0.01760613 0.01760614]
+ [0.01952484 0.01952471 0.01952463 0.01952486 0.01952487 0.01952494
+  0.82427644 0.01952482 0.01952491 0.01952497]
+ [0.02020836 0.02020582 0.02020633 0.02020595 0.81814349 0.02020593
+  0.02020633 0.02020579 0.02020603 0.02020596]
+ [0.02234554 0.02234515 0.79889185 0.02234527 0.02234549 0.02234541
+  0.02234499 0.02234519 0.02234494 0.02234617]
+ [0.85192822 0.01645238 0.01645251 0.01645241 0.01645244 0.0164522
+  0.0164523  0.01645233 0.01645248 0.01645274]
+ [0.01671591 0.01671605 0.01671618 0.84955564 0.01671616 0.01671597
+  0.01671642 0.01671616 0.01671563 0.01671589]
+ [0.02000918 0.02000852 0.02000889 0.0200083  0.02000821 0.02000867
+  0.02000854 0.02000891 0.81992183 0.02000895]
+ [0.01952551 0.01952591 0.01952581 0.01952584 0.01952538 0.01952641
+  0.82426795 0.01952584 0.0195258  0.01952554]
+ [0.01532324 0.01532288 0.01532288 0.01532453 0.01532262 0.01532279
+  0.01532292 0.86209249 0.01532284 0.01532281]
+ [0.01715688 0.01715627 0.0171562  0.01715599 0.01715641 0.01715651
+  0.01715633 0.01715643 0.84559297 0.01715602]
+ [0.01885253 0.01885201 0.01885251 0.01885232 0.0188523  0.01885237
+  0.01885208 0.8303286  0.01885249 0.01885279]
+ [0.02230127 0.02230139 0.0223013  0.02230095 0.02230099 0.02230095
+  0.02230105 0.02230117 0.02230306 0.79928787]
+ [0.0228169  0.02281726 0.0228174  0.02281695 0.02281698 0.02281684
+  0.02281747 0.02281749 0.02281735 0.79464538]
+ [0.81824568 0.02019458 0.02019537 0.02019485 0.02019445 0.02019525
+  0.02019458 0.02019494 0.02019536 0.02019495]
+ [0.84624908 0.01708327 0.01708331 0.01708359 0.01708379 0.01708314
+  0.01708365 0.01708327 0.0170835  0.0170834 ]
+ [0.01469364 0.014693   0.01469325 0.01469295 0.01469314 0.01469304
+  0.014693   0.01469318 0.01469313 0.86776167]
+ [0.82399712 0.0195556  0.019556   0.01955585 0.01955569 0.01955564
+  0.0195563  0.01955595 0.01955588 0.01955596]
+ [0.8531826  0.016313   0.01631309 0.0163127  0.0163129  0.01631286
+  0.01631296 0.01631332 0.0163132  0.01631337]
+ [0.86615414 0.01487172 0.01487183 0.01487189 0.0148716  0.01487188
+  0.01487162 0.0148719  0.01487174 0.01487169]
+ [0.01592307 0.01592273 0.01592294 0.0159229  0.01592297 0.01592292
+  0.01592305 0.01592302 0.85669339 0.01592302]
+ [0.01734357 0.01734341 0.01734423 0.84390915 0.01734335 0.01734339
+  0.01734335 0.01734322 0.01734304 0.01734329]
+ [0.01670569 0.01670565 0.01670559 0.01670599 0.0167056  0.01670583
+  0.84964876 0.01670549 0.01670579 0.01670561]
+ [0.01605031 0.01604994 0.01605021 0.01604998 0.01604991 0.01605013
+  0.85554796 0.01605161 0.01605    0.01604995]
+ [0.01345133 0.01345137 0.01345133 0.01345134 0.01345169 0.01345141
+  0.01345157 0.87893728 0.01345128 0.01345139]
+ [0.84790865 0.01689909 0.01689896 0.01689935 0.01689881 0.01689931
+  0.01689897 0.01689904 0.01689893 0.01689889]
+ [0.01663659 0.01663634 0.01663628 0.85027101 0.01663638 0.01663724
+  0.01663645 0.01663667 0.01663666 0.01663639]
+ [0.01825833 0.83567458 0.01825803 0.01825845 0.01825845 0.01825847
+  0.01825867 0.01825824 0.01825834 0.01825845]
+ [0.01567166 0.01567134 0.0156714  0.01567132 0.01567128 0.01567137
+  0.01567139 0.01567313 0.85895598 0.01567112]
+ [0.01652363 0.01652376 0.01652448 0.01652364 0.01652363 0.01652356
+  0.8512858  0.01652374 0.01652363 0.01652413]
+ [0.01757241 0.01757236 0.01757276 0.01757277 0.01757241 0.01757281
+  0.84184659 0.01757252 0.01757275 0.01757264]
+ [0.01622751 0.01622701 0.01622726 0.01622741 0.01622698 0.85395149
+  0.01622776 0.01622964 0.01622776 0.01622718]
+ [0.01491781 0.01491783 0.01491786 0.0149177  0.01491775 0.86573937
+  0.01491776 0.01491836 0.01491793 0.01491762]
+ [0.0168428  0.01684252 0.01684259 0.01684234 0.01684447 0.01684255
+  0.01684268 0.01684268 0.84841479 0.01684257]
+ [0.0163887  0.01638854 0.01638846 0.85250279 0.01638843 0.01638857
+  0.01638875 0.01638861 0.01638879 0.01638837]
+ [0.01551531 0.01551513 0.01551513 0.01551528 0.01551534 0.01551502
+  0.86036251 0.01551552 0.01551568 0.01551509]
+ [0.01471494 0.86756627 0.01471476 0.01471466 0.01471476 0.01471482
+  0.01471498 0.01471482 0.01471488 0.01471511]
+ [0.01624564 0.01624537 0.01624553 0.01624555 0.01624578 0.01624541
+  0.01624578 0.01624589 0.85378972 0.01624533]
+ [0.01646583 0.01646612 0.016466   0.01646616 0.01646655 0.01646615
+  0.85180486 0.01646612 0.01646625 0.01646597]
+ [0.01679881 0.0167975  0.01679791 0.0167977  0.01679781 0.01679758
+  0.8488194  0.01679769 0.01679781 0.01679779]
+ [0.01975794 0.01975809 0.82217735 0.01975799 0.01975785 0.01975871
+  0.01975836 0.0197579  0.01975805 0.01975776]
+ [0.01487105 0.01487079 0.01487106 0.01487085 0.01487089 0.0148732
+  0.01487093 0.86615931 0.01487108 0.01487083]
+ [0.0153826  0.01538207 0.01538234 0.86156058 0.01538206 0.0153819
+  0.01538217 0.01538185 0.01538237 0.01538206]
+ [0.01441457 0.01441466 0.01441432 0.01441452 0.01441431 0.01441453
+  0.01441432 0.87027011 0.01441436 0.01441432]
+ [0.01891349 0.01891332 0.01891352 0.01891355 0.0189129  0.82977912
+  0.01891329 0.01891326 0.01891436 0.0189132 ]
+ [0.0149072  0.01490704 0.01490718 0.01490725 0.01490686 0.01490685
+  0.01490717 0.01490703 0.86583639 0.01490703]
+ [0.0200444  0.02004404 0.02004445 0.02004413 0.81960113 0.02004424
+  0.02004456 0.02004437 0.02004444 0.02004424]
+ [0.01455584 0.01455585 0.01455557 0.01455579 0.01455543 0.01455572
+  0.01455563 0.01455549 0.01455575 0.86899892]
+ [0.01847909 0.01847878 0.01847872 0.01847932 0.01847871 0.01847873
+  0.01847853 0.01847893 0.83369029 0.01847891]
+ [0.02314935 0.02314916 0.02314924 0.02314889 0.02314936 0.02314881
+  0.79165787 0.02314896 0.02314926 0.02314909]
+ [0.83404807 0.018439   0.01843879 0.01843893 0.01843876 0.01843917
+  0.01843886 0.01843893 0.01844044 0.01843905]
+ [0.8532051  0.01631043 0.01631052 0.01631049 0.01631043 0.01631107
+  0.01631049 0.01631034 0.01631058 0.01631054]
+ [0.01335565 0.01335527 0.01335529 0.01335549 0.87980077 0.01335552
+  0.01335549 0.01335553 0.01335539 0.0133556 ]
+ [0.83742618 0.01806324 0.01806365 0.01806364 0.0180633  0.01806362
+  0.01806379 0.01806356 0.01806518 0.01806383]
+ [0.01880001 0.01879933 0.01879961 0.01879946 0.83080334 0.01879953
+  0.01879967 0.01879999 0.01879961 0.01879945]
+ [0.01617246 0.01617212 0.85444878 0.01617234 0.0161726  0.01617245
+  0.01617267 0.01617217 0.01617239 0.01617202]
+ [0.01510694 0.01510682 0.01510677 0.01510691 0.01510761 0.86403715
+  0.01510687 0.01510714 0.01510692 0.01510687]
+ [0.0173413  0.01734022 0.01734014 0.01734017 0.01734023 0.01733967
+  0.01734018 0.84393811 0.01733999 0.01733998]
+ [0.85792984 0.01578537 0.01578573 0.01578554 0.01578562 0.01578562
+  0.01578587 0.01578542 0.01578552 0.01578548]
+ [0.01618741 0.01618736 0.01618736 0.85431277 0.01618743 0.01618763
+  0.01618757 0.01618742 0.01618759 0.01618746]
+ [0.01679065 0.01679074 0.84888367 0.01679055 0.01679057 0.01679061
+  0.0167909  0.01679087 0.0167907  0.01679073]
+ [0.01478612 0.01478567 0.01478596 0.86692684 0.01478589 0.01478604
+  0.01478583 0.01478588 0.01478596 0.0147858 ]
+ [0.02072526 0.02072484 0.02072489 0.02072495 0.02072458 0.02072448
+  0.02072547 0.81347572 0.02072489 0.02072492]
+ [0.01486013 0.86625996 0.01486    0.01485988 0.01485977 0.01486012
+  0.01485995 0.01486023 0.01486002 0.01485994]
+ [0.01795174 0.01795181 0.01795166 0.83843376 0.01795156 0.0179514
+  0.01795191 0.01795266 0.01795195 0.01795155]
+ [0.01787307 0.01787073 0.01787123 0.0178711  0.01787065 0.01787146
+  0.01787108 0.01787097 0.83915895 0.01787076]
+ [0.01586816 0.01586798 0.01586837 0.01586787 0.01586782 0.01586767
+  0.85718824 0.01586794 0.01586787 0.01586809]
+ [0.01574205 0.01574187 0.01574202 0.01574196 0.85832201 0.01574195
+  0.01574188 0.0157424  0.015742   0.01574187]
+ [0.02635289 0.02635287 0.02635372 0.02635316 0.02635276 0.02635304
+  0.02635305 0.76282075 0.02635505 0.02635271]
+ [0.02208216 0.02208196 0.02208225 0.8012599  0.02208233 0.02208239
+  0.02208233 0.02208219 0.02208284 0.02208165]
+ [0.01593407 0.01593351 0.01593587 0.85659506 0.01593368 0.01593346
+  0.01593349 0.01593353 0.01593373 0.01593361]
+ [0.87564359 0.01381738 0.01381745 0.01381772 0.01381725 0.01381743
+  0.01381726 0.01381736 0.01381726 0.01381732]
+ [0.83591396 0.01823193 0.01823157 0.01823189 0.01823149 0.01823183
+  0.01823167 0.01823175 0.01823209 0.01823181]
+ [0.01665196 0.01665183 0.01665219 0.01665199 0.01665203 0.01665214
+  0.01665192 0.01665221 0.85013153 0.01665219]
+ [0.01724022 0.01723997 0.84483978 0.01724    0.01724019 0.01724004
+  0.01724021 0.0172399  0.01723979 0.0172399 ]
+ [0.84912994 0.01676318 0.01676322 0.01676359 0.01676354 0.01676329
+  0.01676341 0.01676323 0.01676328 0.01676333]
+ [0.0173473  0.0173473  0.84386936 0.01734717 0.01734748 0.01734751
+  0.01734746 0.01734746 0.01735144 0.01734752]
+ [0.02022484 0.02022511 0.02022513 0.02022496 0.02022509 0.0202248
+  0.02022528 0.02022515 0.02022518 0.81797446]
+ [0.0161712  0.01617064 0.85446088 0.01617141 0.01617111 0.01617076
+  0.01617093 0.01617112 0.01617099 0.01617096]
+ [0.01494534 0.86549416 0.0149451  0.0149452  0.01494503 0.01494496
+  0.01494523 0.0149449  0.01494504 0.01494504]
+ [0.84967422 0.01670292 0.0167031  0.01670289 0.01670278 0.01670275
+  0.01670296 0.01670285 0.01670292 0.0167026 ]
+ [0.01850965 0.01850999 0.83341041 0.01850961 0.01851093 0.01850993
+  0.01850992 0.01850997 0.01850975 0.01850984]
+ [0.01609095 0.01609056 0.01609061 0.01609064 0.01609042 0.01609063
+  0.01609047 0.01609112 0.85518403 0.01609056]
+ [0.01536799 0.01536798 0.86168556 0.01536787 0.01536798 0.01536865
+  0.01536795 0.01536792 0.01536783 0.01537026]
+ [0.01610838 0.01610817 0.01610829 0.01610806 0.01610851 0.85502459
+  0.01610924 0.01610841 0.0161082  0.01610814]
+ [0.85400445 0.01622173 0.01622174 0.01622179 0.01622187 0.01622151
+  0.01622175 0.01622166 0.01622174 0.01622175]
+ [0.85865402 0.01570481 0.01570485 0.01570486 0.01570484 0.01570464
+  0.01570481 0.01570484 0.01570458 0.01570775]
+ [0.01694644 0.01694624 0.84748141 0.01694656 0.01694651 0.01694654
+  0.01694684 0.01694659 0.01694656 0.01694631]
+ [0.83396982 0.01844752 0.01844761 0.01844737 0.01844771 0.01844759
+  0.01844782 0.0184478  0.01844771 0.01844905]
+ [0.01751686 0.01751651 0.01751913 0.01751676 0.01751655 0.01751677
+  0.84234797 0.01751656 0.01751658 0.01751631]
+ [0.01678862 0.01678846 0.01678852 0.01678817 0.01678926 0.84890324
+  0.01678859 0.01678825 0.01678861 0.01678829]
+ [0.01749218 0.01749215 0.01749189 0.0174918  0.01749182 0.01749234
+  0.01749186 0.01749195 0.01749215 0.84257186]
+ [0.01947661 0.01947652 0.01947781 0.01947701 0.0194769  0.01947691
+  0.01947688 0.01947688 0.01947684 0.82470764]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">sum</span><span class="o">=</span><span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">lda_top</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+  <span class="nb">sum</span><span class="o">=</span><span class="nb">sum</span><span class="o">+</span><span class="n">i</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">sum</span><span class="p">)</span>  
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9999999999999999
+</pre></div>
+</div>
+</div>
+</div>
+<section id="note-that-the-values-in-a-particular-row-adds-to-1-this-is-beacuse-each-value-denotes-the-of-contribution-of-the-corressponding-topic-in-the-document">
+<h2>Note that the values in a particular row adds to 1. This is beacuse each value denotes the % of contribution of the corressponding topic in the document.<a class="headerlink" href="#note-that-the-values-in-a-particular-row-adds-to-1-this-is-beacuse-each-value-denotes-the-of-contribution-of-the-corressponding-topic-in-the-document" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># composition of doc 0 for eg</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Document 0: &quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">topic</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lda_top</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Topic &quot;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="s2">&quot;: &quot;</span><span class="p">,</span><span class="n">topic</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span><span class="s2">&quot;%&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Document 0: 
+Topic  0 :  1.7606057257740977 %
+Topic  1 :  1.760575117973549 %
+Topic  2 :  84.15450820165448 %
+Topic  3 :  1.7606148676643163 %
+Topic  4 :  1.7606344112773575 %
+Topic  5 :  1.7606198160863915 %
+Topic  6 :  1.760618765515936 %
+Topic  7 :  1.7605961854487249 %
+Topic  8 :  1.760612515741768 %
+Topic  9 :  1.7606143928633715 %
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="as-we-can-see-topic-7-8-are-dominantly-present-in-document-0">
+<h2>As we can see Topic 7 &amp; 8 are dominantly present in document 0.<a class="headerlink" href="#as-we-can-see-topic-7-8-are-dominantly-present-in-document-0" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">lda_model</span><span class="o">.</span><span class="n">components_</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">lda_model</span><span class="o">.</span><span class="n">components_</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>  <span class="c1"># (no_of_topics*no_of_words)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[0.87031074 0.81813012 0.83015105 ... 0.92735658 0.75631215 0.85980957]
+ [0.92655524 0.87067853 0.62901989 ... 0.82639978 0.85778511 1.05082202]
+ [0.70130931 0.82668702 0.88243736 ... 0.93366641 0.77714305 0.80835129]
+ ...
+ [0.75684554 0.9550319  0.8725001  ... 0.79899847 0.67643369 0.81364776]
+ [0.95147063 0.77533795 0.80687734 ... 0.88485663 0.7956038  0.81234622]
+ [0.75327381 0.78329373 0.94823215 ... 0.93919858 0.6984575  0.72555995]]
+(10, 1000)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="most-important-words-for-a-topic-say-10-this-time">
+<h2>Most important words for a topic. (say 10 this time.)<a class="headerlink" href="#most-important-words-for-a-topic-say-10-this-time" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># most important words for each topic</span>
+<span class="n">vocab</span> <span class="o">=</span> <span class="n">vect</span><span class="o">.</span><span class="n">get_feature_names</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">comp</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lda_model</span><span class="o">.</span><span class="n">components_</span><span class="p">):</span>
+    <span class="n">vocab_comp</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">vocab</span><span class="p">,</span> <span class="n">comp</span><span class="p">)</span>
+    <span class="n">sorted_words</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">vocab_comp</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)[:</span><span class="mi">10</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Topic &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;: &quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">sorted_words</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">end</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Topic 0: 
+siswa diakses citra produk pengolahan informasi persero manual pengukuran penggunaan 
+
+Topic 1: 
+pengembangan memilah informasi pemetaan beasiswa mencari mengidentifikasi yogyakarta gari topsis 
+
+Topic 2: 
+browser sistem shutter transaksi proses gizi status persentase terdistribusi goal 
+
+Topic 3: 
+tanda subsektor batik terpisah gizi membutuhkan pemahaman kelebihan negeri memasarkan 
+
+Topic 4: 
+pelanggan pembimbing memperbaharui output periode kendala 10 lazim peraturan jaringan 
+
+Topic 5: 
+cacat risiko lunak tindak gari sigma perangkat strategy senyum membandingkan 
+
+Topic 6: 
+game tangan konsumen player sumenep orang karapan mobile perintah peramalan 
+
+Topic 7: 
+pekerja diambil means malaria memiliki siswa separation lawan time sederhana 
+
+Topic 8: 
+straw nilai multi preshion manfaat toefl fuzzy pelajaran baku upaya 
+
+Topic 9: 
+imunisasi deteksi manusia tulisan berfungsi tataletak spare tanaman mengakibatkan peningkatan 
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/usr/local/lib/python3.7/dist-packages/sklearn/utils/deprecation.py:87: FutureWarning: Function get_feature_names is deprecated; get_feature_names is deprecated in 1.0 and will be removed in 1.2. Please use get_feature_names_out instead.
+  warnings.warn(msg, category=FutureWarning)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="to-better-visualize-words-in-a-topic-we-can-see-the-word-cloud-for-each-topic-top-50-words-are-plotted">
+<h2>To better visualize words in a topic we can see the word cloud. For each topic top 50 words are plotted.<a class="headerlink" href="#to-better-visualize-words-in-a-topic-we-can-see-the-word-cloud-for-each-topic-top-50-words-are-plotted" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span> pip install wordcloud
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Looking in indexes: https://pypi.org/simple, https://us-python.pkg.dev/colab-wheels/public/simple/
+Requirement already satisfied: wordcloud in /usr/local/lib/python3.7/dist-packages (1.5.0)
+Requirement already satisfied: pillow in /usr/local/lib/python3.7/dist-packages (from wordcloud) (7.1.2)
+Requirement already satisfied: numpy&gt;=1.6.1 in /usr/local/lib/python3.7/dist-packages (from wordcloud) (1.21.6)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">wordcloud</span> <span class="kn">import</span> <span class="n">WordCloud</span>
+<span class="c1"># Generate a word cloud image for given topic</span>
+
+<span class="k">def</span> <span class="nf">draw_word_cloud</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
+  <span class="n">imp_words_topic</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+  <span class="n">comp</span><span class="o">=</span><span class="n">lda_model</span><span class="o">.</span><span class="n">components_</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+  <span class="n">vocab_comp</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">vocab</span><span class="p">,</span> <span class="n">comp</span><span class="p">)</span>
+  <span class="n">sorted_words</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">vocab_comp</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)[:</span><span class="mi">50</span><span class="p">]</span>
+  <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">sorted_words</span><span class="p">:</span>
+    <span class="n">imp_words_topic</span><span class="o">=</span><span class="n">imp_words_topic</span><span class="o">+</span><span class="s2">&quot; &quot;</span><span class="o">+</span><span class="n">word</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+  <span class="n">wordcloud</span> <span class="o">=</span> <span class="n">WordCloud</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">imp_words_topic</span><span class="p">)</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">wordcloud</span><span class="p">)</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># topic 0</span>
+<span class="n">draw_word_cloud</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/LSA_56_0.png" src="_images/LSA_56_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># topic 1</span>
+<span class="n">draw_word_cloud</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># ...</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/LSA_57_0.png" src="_images/LSA_57_0.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="the-end">
+<h1>THE END !!!<a class="headerlink" href="#the-end" title="Permalink to this headline">#</a></h1>
+</section>
+<section id="please-star-upvote-in-case-u-liked-it">
+<h1>[Please star/upvote in case u liked it. ]<a class="headerlink" href="#please-star-upvote-in-case-u-liked-it" title="Permalink to this headline">#</a></h1>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="intro.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Welcome to your Jupyter Book</p>
+        </div>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By The Jupyter Book Community<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>
